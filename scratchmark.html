@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Sratchmark Markdown processor</title>
+        <link rel="stylesheet" href="styles/github-markdown.css" />
+        <link
+            rel="stylesheet"
+            href="https://cdn.jsdelivr.net/npm/katex@0.16.21/dist/katex.min.css"
+            integrity="sha384-zh0CIslj+VczCZtlzBcjt5ppRcsAmDnRem7ESsYwWwg3m/OaJ2l4x7YBZl9Kxxib"
+            crossorigin="anonymous"
+        />
+
+        <script
+            src="https://cdn.jsdelivr.net/npm/katex@0.16.21/dist/katex.min.js"
+            integrity="sha384-Rma6DA2IPUwhNxmrB/7S3Tno0YY7sFu9WSYMCuulLhIqYSGZ2gKCJWIqhBWqMQfh"
+            crossorigin="anonymous"
+        ></script>
+
+        <!-- the scratchmark implementation -->
+        <script src="src/scratchmark.min.js"></script>
+        <script>
+            let { scratchmark } = md
+        </script>
+
+        <!-- something to upload & download files -->
+        <script src="src/files.js"></script>
+
+        <style>
+            .markdown-body,
+            #buttons {
+                box-sizing: border-box;
+                min-width: 200px;
+                max-width: 980px;
+                margin: 0 auto;
+                padding: 45px;
+            }
+
+            @media (max-width: 767px) {
+                .markdown-body {
+                    padding: 15px;
+                }
+            }
+        </style>
+    </head>
+    <body>
+        <div id="buttons">
+            <button id="button1">Open Markdown</button>
+            <button id="button2">Save HTML</button>
+            <hr />
+        </div>
+        <div id="output" class="markdown-body"></div>
+    </body>
+    <script src="templates/github.js"></script>
+    <script>
+        let html,
+            name,
+            input = uploader((_name, content) => {
+                name = _name
+                let text = scratchmark(content)
+                document.querySelector('#output').innerHTML = text
+            }, '.md')
+
+        document.getElementById('button1').onclick = () => {
+            input.click()
+        }
+
+        document.getElementById('button2').onclick = () => {
+            let title = name.split('.')[0]
+            download(
+                replace_extension(name, '.html'),
+                plain({ title, body: document.querySelector('#output').innerHTML })
+            )
+        }
+    </script>
+</html>

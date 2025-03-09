@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <link
+            rel="stylesheet"
+            href="https://cdn.jsdelivr.net/npm/katex@0.16.21/dist/katex.min.css"
+            integrity="sha384-zh0CIslj+VczCZtlzBcjt5ppRcsAmDnRem7ESsYwWwg3m/OaJ2l4x7YBZl9Kxxib"
+            crossorigin="anonymous"
+        />
+
+        <script
+            src="https://cdn.jsdelivr.net/npm/katex@0.16.21/dist/katex.min.js"
+            integrity="sha384-Rma6DA2IPUwhNxmrB/7S3Tno0YY7sFu9WSYMCuulLhIqYSGZ2gKCJWIqhBWqMQfh"
+            crossorigin="anonymous"
+        ></script>
+
+        <script src="../src/scratchmark.js"></script>
+        <script>
+            let { scratchmark } = md
+        </script>
+        <script src="../src/extensions/maths_extension.js"></script>
+        <style>
+            table,
+            td,
+            th {
+                border: 1px solid black;
+                border-collapse: collapse;
+                padding: 10px;
+            }
+            blockquote {
+                background: rgb(220, 220, 220);
+                padding: 10px;
+            }
+            blockquote blockquote {
+                background: rgb(200, 200, 200);
+            }
+            .star-list {
+                list-style-type: disc;
+            }
+            .plus-list {
+                list-style-type: square;
+            }
+            .minus-list {
+                list-style-type: circle;
+            }
+        </style>
+        <script src="maths.js"></script>
+    </head>
+    <body></body>
+    <script>
+        tests = tests.map((t) => t.replace(/^\n/, '').replace(/\n$/, ''))
+        var html
+        for (let t of tests) {
+            html = scratchmark(t)
+            document.body.innerHTML += html + '\n<hr>\n'
+        }
+    </script>
+</html>
