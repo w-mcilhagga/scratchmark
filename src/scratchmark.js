@@ -721,7 +721,7 @@ let md = (function () {
         }
     }
 
-    // dedent the list items
+    // dedent list items
     function dedent(items) {
         for (let item of items) {
             // we know there is at least one line, so lines[0] is ok
@@ -979,12 +979,14 @@ let md = (function () {
             let rows = [],
                 row,
                 rowcount = 0,
-                alignment = []
+                alignment,
+                alignedrow = -1
             while ((row = this.row(lines[0], parse_inline, rowcount + 1))) {
                 rowcount++
                 lines.shift()
                 if (!row.name) {
                     alignment = row
+                    alignedrow = rowcount
                 } else {
                     rows.push(row)
                 }
@@ -1003,9 +1005,11 @@ let md = (function () {
                         }
                     }
                 }
-                // first row is header
-                for (let c of rows[0].children) {
-                    c.name = 'th'
+                // first row is header if alignment in row 2
+                if (alignedrow == 2) {
+                    for (let c of rows[0].children) {
+                        c.name = 'th'
+                    }
                 }
                 return {
                     name: 'table',
@@ -1033,7 +1037,7 @@ let md = (function () {
             if (line?.startsWith?.('|')) {
                 let cols = line.split('|').slice(1, -1)
                 // check for an alignment row & return alignment as needed
-                if (number == 2 && cols.every((c) => c && c.match(/^ *:?-+:? *$/))) {
+                if (number <= 2 && cols.every((c) => c && c.match(/^ *:?-+:? *$/))) {
                     return cols.map((c) => {
                         let L = c.match(/^ *:-+/), // colon then at least one -
                             R = c.match(/-+: *$/) // at least one - then colon
