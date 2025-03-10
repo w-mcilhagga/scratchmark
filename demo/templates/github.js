@@ -4,7 +4,7 @@ function plain(config) {
     return `<!doctype html>
 <html>
 <head>
-<title>${config.title}</title>
+<title>${config.title||''}</title>
 <link rel="stylesheet" href="styles/github-markdown.css" />
 <link
     rel="stylesheet"
